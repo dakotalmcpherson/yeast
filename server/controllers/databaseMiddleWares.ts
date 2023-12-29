@@ -17,7 +17,6 @@ const databaseMiddlewares = {
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedData = req.body
-      console.log(updatedData)
       await User.findOneAndUpdate(
         {},
         {$set: updatedData}

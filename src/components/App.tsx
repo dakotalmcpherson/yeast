@@ -1,51 +1,22 @@
-import { useEffect, useState } from 'react';
-import UserContainer from './UserContainer';
-import { User } from '../../types/interfaces';
-import { CircularProgress, Alert } from '@mui/material';
+import Navbar from "./Navbar";
+import Events from "./Events";
+import Home from "./Home";
+import About from "./About";
+import Contact from "./Contact";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
-  const [userData, setUserData] = useState<User>(null)
-
-  async function fetchData() {
-    try {
-      const data = await fetch('/api/profile')
-      const json = await data.json()
-      setUserData(json)
-    }
-    catch {
-      setIsLoading(false)
-      setIsError(true)
-    }
-  }
-
-  useEffect(() => {
-    setIsLoading(true)
-    fetchData()
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
-  }, [])
-
-  if (isLoading) {
-    return (
-    <div style={{display: 'flex', alignContent: 'center', justifyContent: 'center'}}>
-      <CircularProgress />
-    </div>
-    )
-  }
-
-  if (isError || !userData) {
-    return (
-      <Alert severity="error">Error fetching user data</Alert>
-    )
-  }
-
+  
   return (
-    <>
-    <UserContainer todos={userData.todos} fetchData={fetchData} username={userData.username} firstName={userData.firstName} lastName={userData.lastName}/>
-    </>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route path="/events" element={<Events />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
